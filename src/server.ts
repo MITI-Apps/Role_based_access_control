@@ -1,13 +1,14 @@
 import express from "express";
 import sequelize from "./config/database.js";
 import authRoutes from "./routes/authroutes.js"
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
 app.use(express.json());
 
 app.use("/auth", authRoutes);
-
+app.use("/users", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 
