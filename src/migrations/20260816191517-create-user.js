@@ -20,21 +20,15 @@ export default {
       password: {
         type: Sequelize.STRING
       },
-      roleId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Roles",
-        key: "id"
-      }
-      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
       }
     });
   },

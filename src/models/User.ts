@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
 import Role from "./Role.js";
+import UserRole from "./userrole.js";
 
 const User = sequelize.define("User", {
   firstName: {
@@ -22,20 +23,13 @@ const User = sequelize.define("User", {
   password: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-
-  roleId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
   }
 });
 
-Role.hasMany(User, {
-  foreignKey: "roleId"
-});
-
-User.belongsTo(Role, {
-  foreignKey: "roleId"
+User.belongsToMany(Role, {
+  through: UserRole,
+  foreignKey: 'userId',
+  otherKey: 'roleId'
 });
 
 export default User;

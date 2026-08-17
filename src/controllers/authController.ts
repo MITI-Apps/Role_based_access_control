@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import type { Request, Response } from "express";
 import User from "../models/User.js";
+import Role from "../models/Role.js";
 import jwt from "jsonwebtoken";
 
 export const register = async (
@@ -26,6 +27,13 @@ export const register = async (
       });
     }
 
+    const role = await Role.findByPk(roleId);
+    if (!role) {
+      return res.status(400).json({
+        message: "Invalid role."
+      });
+    }
+
     const hashedPassword = await bcrypt.hash(
       password,
       10
@@ -35,9 +43,10 @@ export const register = async (
       firstName,
       lastName,
       email,
-      password: hashedPassword,
-      roleId
+      password: hashedPassword
     });
+
+    await (user as any).addRole(role);
 
     return res.status(201).json({
       message: "User created successfully.",
@@ -79,10 +88,15 @@ export const login = async (
       });
     }
 
+    const roles = await (user as any).getRoles();
+    const roleIds = roles.map(
+      (r: any) => r.getDataValue("id")
+    );
+
     const token = jwt.sign(
       {
         id: user.getDataValue("id"),
-        roleId: user.getDataValue("roleId")
+        roles: roleIds
       },
       process.env.JWT_SECRET!,
       {

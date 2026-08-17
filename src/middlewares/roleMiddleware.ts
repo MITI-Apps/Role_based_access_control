@@ -9,10 +9,13 @@ export const authorize = (
     next: NextFunction
   ) => {
     const user = (req as any).user;
-    
-    if (
-      !allowedRoles.includes(user.roleId)
-    ) {
+    const userRoles: number[] = user.roles || [];
+
+    const hasRole = userRoles.some((roleId: number) =>
+      allowedRoles.includes(roleId)
+    );
+
+    if (!hasRole) {
       return res.status(403).json({
         message: "Access denied."
       });
