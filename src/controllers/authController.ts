@@ -46,7 +46,8 @@ export const register = async (
       password: hashedPassword
     });
 
-    await (user as any).addRole(role);
+    const chck = await (user as any).addRole(role);
+ 
 
     return res.status(201).json({
       message: "User created successfully.",
@@ -79,7 +80,7 @@ export const login = async (
     const isPasswordCorrect =
       await bcrypt.compare(
         password,
-        user.getDataValue("password")
+        user.dataValues.password
       );
 
     if (!isPasswordCorrect) {

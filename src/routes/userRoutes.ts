@@ -4,7 +4,8 @@ import { authorize } from "../middlewares/roleMiddleware.js";
 import type { Request, Response } from "express";
 const router = Router();
 
-router.get("/dashboard", authenticate, authorize(["view_users"]), (req: Request, res: Response) => {
+router.get("/dashboard", authenticate, authorize(["view_grade"]), (req: Request, res: Response) => {
+  console.log("request :", req)
   res.json({
     message: "Welcome."
   });
