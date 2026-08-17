@@ -9,7 +9,7 @@ export const authorize = (
     next: NextFunction
   ) => {
     const user = (req as any).user;
-
+    
     if (
       !allowedRoles.includes(user.roleId)
     ) {
@@ -17,7 +17,6 @@ export const authorize = (
         message: "Access denied."
       });
     }
-
     next();
   };
 };
