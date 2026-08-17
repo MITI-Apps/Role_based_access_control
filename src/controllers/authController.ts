@@ -89,14 +89,19 @@ export const login = async (
     }
 
     const roles = await (user as any).getRoles();
-    const roleIds = roles.map(
-      (r: any) => r.getDataValue("id")
-    );
 
+    const permissionArrays = await Promise.all(
+      roles.map((r: any) => r.getPermissions())
+    );
+    
+    const permissions = permissionArrays.flat();
+    const permissionNames = permissions.map(
+      (p: any) => p.getDataValue("name")
+    );
     const token = jwt.sign(
       {
         id: user.getDataValue("id"),
-        roles: roleIds
+        permissions: permissionNames
       },
       process.env.JWT_SECRET!,
       {

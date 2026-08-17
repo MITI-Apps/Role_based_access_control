@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 
 export const authorize = (
-  allowedRoles: number[]
+  allowedPermissions: string[]
 ) => {
   return (
     req: Request,
@@ -9,13 +9,13 @@ export const authorize = (
     next: NextFunction
   ) => {
     const user = (req as any).user;
-    const userRoles: number[] = user.roles || [];
+    const userPermissions: string[] = user.permissions || [];
 
-    const hasRole = userRoles.some((roleId: number) =>
-      allowedRoles.includes(roleId)
+    const hasPermission = userPermissions.some((permissionName: string) =>
+      allowedPermissions.includes(permissionName)
     );
 
-    if (!hasRole) {
+    if (!hasPermission) {
       return res.status(403).json({
         message: "Access denied."
       });
