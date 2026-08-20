@@ -24,6 +24,9 @@ app.use(express.json());
 
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
+app.get("/", (req, res) => {
+  res.send("Welcome to the RABC");
+});
 
 const PORT = process.env.PORT || 5000;
 

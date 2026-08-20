@@ -81,7 +81,7 @@ export const login = async (
       await bcrypt.compare(
         password,
         user.dataValues.password
-      );
+      ); 
 
     if (!isPasswordCorrect) {
       return res.status(401).json({
