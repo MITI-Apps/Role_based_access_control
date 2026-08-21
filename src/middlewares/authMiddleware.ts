@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import logger from "../utils/logger.js";
 
 export const authenticate = (
   req: Request,
@@ -32,6 +33,7 @@ export const authenticate = (
 
     next();
   } catch (error) {
+    logger.error("Token verification failed", { error });
     return res.status(401).json({
       message: "Invalid token."
     });

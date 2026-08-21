@@ -4,6 +4,7 @@ import "./models/index.js";
 import authRoutes from "./routes/authroutes.js"
 import userRoutes from "./routes/userRoutes.js";
 import cors from "cors";
+import logger from "./utils/logger.js";
 
 const app = express();
 
@@ -34,14 +35,18 @@ const startServer = async () => {
   try {
     await sequelize.authenticate();
 
-    console.log("Database connected.");
+    logger.info("Database connected.");
 
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      logger.info(`Server running on port ${PORT}`);
     });
   } catch (error) {
-    console.error(error);
+    logger.error("Failed to connect to database", { error });
   }
 };
 
 startServer();
+
+process.on("unhandledRejection", (err) => {
+  logger.error("Unhandled Rejection", { error: err });
+});

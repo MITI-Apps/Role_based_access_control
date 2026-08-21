@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import User from "../models/User.js";
 import Role from "../models/Role.js";
 import jwt from "jsonwebtoken";
+import logger from "../utils/logger.js";
 
 export const register = async (
   req: Request,
@@ -54,6 +55,7 @@ export const register = async (
       user
     });
   } catch (error) {
+    logger.error("Registration failed", { error });
     return res.status(500).json({
       message: "Server error."
     });
@@ -114,6 +116,7 @@ export const login = async (
       token
     });
   } catch (error) {
+    logger.error("Login failed", { error });
     return res.status(500).json({
       message: "Server error."
     });
